@@ -3,12 +3,11 @@ from django.http import HttpResponse
 from django.contrib import messages # for login error message
 from django.contrib.auth.decorators import login_required # for login-user permision
 from django.db.models import Q # for multiple search
-from django.contrib.auth.models import User # for login
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm # for register
 # import User-defined classes
-from .models import Room, Topic, Message # for home page
-from .forms import RoomForm, UserForm
+from .models import Room, Topic, Message, User # in base/model.py
+from .forms import RoomForm, UserForm, MyUserCreationForm # Customize Register Form
 
 # The order doesn't matter
 
@@ -19,14 +18,14 @@ def loginPage(request):
 		return redirect('home')
 
 	if request.method == "POST":
-		username = request.POST.get('username').lower() # get by name
+		email = request.POST.get('email').lower() # get by name
 		password = request.POST.get('password')
 		try:
-			user = User.objects.get(username = username)
+			user = User.objects.get(email = email)
 		except:
 			messages.error(request, 'User does not exist')
 		
-		user = authenticate(request, username = username, password = password)
+		user = authenticate(request, email = email, password = password)
 
 		if user:
 			login(request, user)
@@ -43,8 +42,10 @@ def logoutUser(request):
 	return redirect('home')
 
 def registerPage(request):
-	form = UserCreationForm(request.POST)
+	form = MyUserCreationForm(request.POST)
+
 	if form.is_valid(): # check if the form is valid
+		form = MyUserCreationForm(request.POST)
 		user = form.save(commit=False)
 		user.username = user.username.lower() # lower case
 		user.save()
@@ -185,7 +186,7 @@ def updateUser(request):
     user = request.user
     form = UserForm(instance=user)
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
+        form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk=user.id)

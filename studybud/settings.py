@@ -37,10 +37,15 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+
 	'base.apps.BaseConfig',
+
 	'rest_framework', # https://www.django-rest-framework.org/
 	'corsheaders', # https://pypi.org/project/django-cors-headers/
 ]
+
+# NOTE: class 'User' in base/model.py For using email as login id
+AUTH_USER_MODEL = 'base.User' 
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
@@ -124,10 +129,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/images/'
+
 
 STATICFILES_DIRS = [
 	BASE_DIR / 'static'
 ]
+
+# Place storing media data
+MEDIA_ROOT = BASE_DIR / 'static/images'
 
 # STATIC_ROOT = 'static_root'
 

@@ -1,5 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import User # 直接使用内置User类
+# from django.contrib.auth.models import User # Use Built-in Class `User`
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+	'''Customize User Class'''
+	name = models.CharField(max_length=200, null=True)
+	email = models.EmailField(unique=True, null=True)
+	bio = models.TextField(null=True)
+
+	# 'pillow' needed
+	avatar = models.ImageField(null=True, default="avatar.svg")
+
+	USERNAME_FIELD = 'email' # Customize Login id
+	REQUIRED_FIELDS = []
 
 class Topic(models.Model):
 	name = models.CharField(max_length=200)

@@ -1,8 +1,13 @@
 from django.forms import ModelForm
-from .models import Room 
-from django.contrib.auth.models import User # 直接使用内置User类
+from .models import Room, User # classes from model.py
+from django.contrib.auth.forms import UserCreationForm # Customized UserForm
 
 # . represents current directory
+
+class MyUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['name', 'username', 'email', 'password1', 'password2']
 
 class RoomForm(ModelForm):
 	class Meta:
@@ -13,4 +18,4 @@ class RoomForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['avatar', 'name', 'username', 'email', 'bio']
