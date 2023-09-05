@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 
-	'base.apps.BaseConfig',
+	'base.apps.BaseConfig', # register apps
 
 	'rest_framework', # https://www.django-rest-framework.org/
 	'corsheaders', # https://pypi.org/project/django-cors-headers/
